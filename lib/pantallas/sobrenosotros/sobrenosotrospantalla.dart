@@ -1,6 +1,7 @@
 //lib/pantallas/sobrenosotros/sobrenosotrospantalla.dart
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class SobreNosotrosPantalla extends StatefulWidget {
   const SobreNosotrosPantalla({super.key});
@@ -10,17 +11,24 @@ class SobreNosotrosPantalla extends StatefulWidget {
 }
 
 class _SobreNosotrosPantallaState extends State<SobreNosotrosPantalla> {
-  late VideoPlayerController _controller;
+  
+  late final YoutubePlayerController _controller;
 
   @override
   void initState() {
     super.initState();
     
-    _controller = VideoPlayerController.networkUrl(Uri.parse(
-        'https://youtu.be/-V5SvkZG23w'))
-      ..initialize().then((_) {
-        setState(() {}); 
-      });
+  
+    const videoUrl = 'https://youtu.be/-V5SvkZG23w';
+    final videoId = YoutubePlayer.convertUrlToId(videoUrl);
+
+    _controller = YoutubePlayerController(
+      initialVideoId: videoId!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: false, 
+        mute: false,
+      ),
+    );
   }
 
   @override
@@ -62,34 +70,15 @@ class _SobreNosotrosPantallaState extends State<SobreNosotrosPantalla> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              _controller.value.isInitialized
-                  ? AspectRatio(
-                      aspectRatio: _controller.value.aspectRatio,
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: <Widget>[
-                          VideoPlayer(_controller),
-                          VideoProgressIndicator(_controller, allowScrubbing: true),
-                          Center(
-                            child: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _controller.value.isPlaying
-                                      ? _controller.pause()
-                                      : _controller.play();
-                                });
-                              },
-                              icon: Icon(
-                                _controller.value.isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
-                                color: Colors.white,
-                                size: 60,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : const Center(child: CircularProgressIndicator()),
+              
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: YoutubePlayer(
+                  controller: _controller,
+                  showVideoProgressIndicator: true,
+                  progressIndicatorColor: Colors.green,
+                ),
+              ),
             ],
           ),
         ),
@@ -99,7 +88,7 @@ class _SobreNosotrosPantallaState extends State<SobreNosotrosPantalla> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 }
