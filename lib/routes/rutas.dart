@@ -20,6 +20,10 @@ import 'package:ministerio_medioambienteapkrd/pantallas/mapareportes/mapareporte
 import 'package:ministerio_medioambienteapkrd/pantallas/perfil/cambiarcontrasenapantalla.dart';
 import 'package:ministerio_medioambienteapkrd/pantallas/principal/principalpantalla.dart';
 
+import 'package:ministerio_medioambienteapkrd/pantallas/recuperacion/recuperar_paso1_pantalla.dart';
+
+
+
 class Rutas {
   static const String principal = '/principal';
   static const String inicio = '/inicio';
@@ -39,6 +43,9 @@ class Rutas {
   static const String misreportes = '/misreportes';
   static const String mapareportes = '/mapareportes';
   static const String cambiarcontrasena = '/cambiarcontrasena';
+
+  static const String recuperarPaso1 = '/recuperar_paso1';
+  static const String recuperarPaso2 = '/recuperar_paso2';
 }
 
 Map<String, WidgetBuilder> obtenerrutas() {
@@ -61,5 +68,7 @@ Map<String, WidgetBuilder> obtenerrutas() {
     Rutas.misreportes: (context) => const MisReportesPantalla(),
     Rutas.mapareportes: (context) => const MapaReportesPantalla(),
     Rutas.cambiarcontrasena: (context) => const CambiarContrasenaPantalla(),
+ 
+    Rutas.recuperarPaso1: (context) => const RecuperarPaso1Pantalla(),
   };
 }

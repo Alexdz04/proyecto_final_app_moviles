@@ -60,7 +60,6 @@ class _LoginPantallaState extends State<LoginPantalla> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                
                 CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.grey[200],
@@ -127,8 +126,9 @@ class _LoginPantallaState extends State<LoginPantalla> {
                       ),
                 const SizedBox(height: 20),
                 TextButton(
+                  
                   onPressed: () {
-                    
+                    Navigator.pushNamed(context, Rutas.recuperarPaso1);
                   },
                   child: const Text('Olvidaste tu contraseña?'),
                 ),
@@ -152,4 +152,3 @@ class _LoginPantallaState extends State<LoginPantalla> {
     );
   }
 }
-

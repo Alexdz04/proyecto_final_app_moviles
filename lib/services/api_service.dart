@@ -40,6 +40,19 @@ class ApiService {
   }
 
 
+  Future<Map<String, dynamic>?> solicitarCodigoRecuperacion(String correo) async {
+    return await post('/auth/recover', {'correo': correo});
+  }
+
+  Future<Map<String, dynamic>?> resetearContrasena(String correo, String codigo, String nuevaPassword) async {
+    return await post('/auth/reset', {
+      'correo': correo,
+      'codigo': codigo,
+      'nueva_password': nuevaPassword,
+    });
+  }
+
+
   Future<List<dynamic>> obtenerServicios() async => await get('servicios') ?? [];
   Future<List<dynamic>> obtenerNoticias() async => await get('noticias') ?? [];
   Future<List<dynamic>> obtenerVideos() async => await get('videos') ?? [];
@@ -51,7 +64,7 @@ class ApiService {
     return await post('voluntarios', datos);
   }
 
-  
+
   Future<List<dynamic>> obtenerNormativas(String token) async => await get('normativas', token: token) ?? [];
   Future<List<dynamic>> obtenerMisReportes(String token) async => await get('reportes', token: token) ?? [];
 
