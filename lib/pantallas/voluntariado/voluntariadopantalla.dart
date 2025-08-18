@@ -19,17 +19,16 @@ class _VoluntariadoPantallaState extends State<VoluntariadoPantalla> {
   final _correoController = TextEditingController();
   final _contrasenaController = TextEditingController();
   final _telefonoController = TextEditingController();
+  final _matriculaController = TextEditingController(); 
 
   Future<void> _enviarSolicitud() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _cargando = true);
 
-      
       final nombreCompleto = _nombreController.text.split(' ');
       final nombre = nombreCompleto.isNotEmpty ? nombreCompleto.first : '';
       final apellido = nombreCompleto.length > 1 ? nombreCompleto.sublist(1).join(' ') : '';
 
-    
       final Map<String, dynamic> datos = {
         'cedula': _cedulaController.text,
         'nombre': nombre,
@@ -37,14 +36,16 @@ class _VoluntariadoPantallaState extends State<VoluntariadoPantalla> {
         'correo': _correoController.text,
         'password': _contrasenaController.text,
         'telefono': _telefonoController.text,
+        'matricula': _matriculaController.text, 
       };
 
-      final respuesta = await _apiService.enviarVoluntario(datos);
+   
+      final respuesta = await _apiService.registrarUsuario(datos);
       setState(() => _cargando = false);
 
       if (!mounted) return;
 
-    
+  
       final mensaje = respuesta['error'] ?? 'Solicitud enviada exitosamente!! Ahora puedes iniciar sesion';
       final colorFondo = respuesta.containsKey('error') ? Colors.red : Colors.green;
 
@@ -69,6 +70,7 @@ class _VoluntariadoPantallaState extends State<VoluntariadoPantalla> {
     _correoController.dispose();
     _contrasenaController.dispose();
     _telefonoController.dispose();
+    _matriculaController.dispose(); 
     super.dispose();
   }
 
@@ -76,6 +78,7 @@ class _VoluntariadoPantallaState extends State<VoluntariadoPantalla> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        
         title: const Text('Unete como voluntario!'),
       ),
       body: SingleChildScrollView(
@@ -137,6 +140,13 @@ class _VoluntariadoPantallaState extends State<VoluntariadoPantalla> {
                     keyboardType: TextInputType.phone,
                     validator: (v) => v!.isEmpty ? 'Campo requerido' : null,
                   ),
+                  const SizedBox(height: 12),
+                  
+                  TextFormField(
+                    controller: _matriculaController,
+                    decoration: const InputDecoration(labelText: 'Matricula'),
+                    validator: (v) => v!.isEmpty ? 'Campo requerido' : null,
+                  ),
                   const SizedBox(height: 24),
                   _cargando
                       ? const CircularProgressIndicator()
@@ -145,6 +155,7 @@ class _VoluntariadoPantallaState extends State<VoluntariadoPantalla> {
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 50),
                           ),
+                          
                           child: const Text('Envia solicitud'),
                         ),
                 ],

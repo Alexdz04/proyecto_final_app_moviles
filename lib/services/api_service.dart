@@ -39,6 +39,11 @@ class ApiService {
     return {'error': 'Error de conexion!'};
   }
 
+  // --- Funciones de Autenticacion y Registro ---
+  // CORREGIDO: Se añade la funcion para el registro completo de usuario.
+  Future<Map<String, dynamic>> registrarUsuario(Map<String, dynamic> datos) async {
+    return await post('/auth/register', datos);
+  }
 
   Future<Map<String, dynamic>?> solicitarCodigoRecuperacion(String correo) async {
     return await post('/auth/recover', {'correo': correo});
@@ -52,18 +57,12 @@ class ApiService {
     });
   }
 
-
   Future<List<dynamic>> obtenerServicios() async => await get('servicios') ?? [];
   Future<List<dynamic>> obtenerNoticias() async => await get('noticias') ?? [];
   Future<List<dynamic>> obtenerVideos() async => await get('videos') ?? [];
   Future<List<dynamic>> obtenerAreasProtegidas() async => await get('areas_protegidas') ?? [];
   Future<List<dynamic>> obtenerMedidas() async => await get('medidas') ?? [];
   Future<List<dynamic>> obtenerEquipo() async => await get('equipo') ?? [];
-
-  Future<Map<String, dynamic>> enviarVoluntario(Map<String, dynamic> datos) async {
-    return await post('voluntarios', datos);
-  }
-
 
   Future<List<dynamic>> obtenerNormativas(String token) async => await get('normativas', token: token) ?? [];
   Future<List<dynamic>> obtenerMisReportes(String token) async => await get('reportes', token: token) ?? [];
